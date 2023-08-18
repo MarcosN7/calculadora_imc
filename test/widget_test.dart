@@ -5,7 +5,7 @@ import 'package:calculadora_imc/main.dart';
 
 void main() {
   testWidgets('Teste da calculadora de IMC', (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(const MyApp());
 
     expect(find.text('Informe seus dados:'), findsOneWidget);
 
