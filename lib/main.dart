@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: const Key('weightTextField'),
                 controller: weightController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Peso (kg)',
                 ),
               ),
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 key: const Key('heightTextField'),
                 controller: heightController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Altura (m)',
                 ),
               ),
@@ -101,13 +101,13 @@ class _MyHomePageState extends State<MyHomePage> {
               const SizedBox(height: 16.0),
               Text(
                 'IMC: $result',
-                style: TextStyle(fontSize: 24),
+                style: const TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8.0),
               Text(
                 interpretation,
-                style: TextStyle(fontSize: 18),
+                style: const TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
               ),
             ],
