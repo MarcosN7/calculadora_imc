@@ -4,6 +4,15 @@ void main() {
   runApp(const MyApp());
 }
 
+class IMC {
+  double weight = 0;
+  double height = 0;
+  double result = 0;
+  String interpretation = "";
+
+  IMC(this.weight, this.height);
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -27,38 +36,35 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  TextEditingController weightController = TextEditingController();
-  TextEditingController heightController = TextEditingController();
-
-  String result = "";
-  String interpretation = "";
+  IMC imc = IMC(0, 0);
+  List<IMC> imcList = [];
 
   void calculateBMI() {
-    double weight = double.tryParse(weightController.text) ?? 0;
-    double height = double.tryParse(heightController.text) ?? 0;
-
-    if (weight > 0 && height > 0) {
-      double bmi = weight / (height * height);
+    if (imc.weight > 0 && imc.height > 0) {
+      double bmi = imc.weight / (imc.height * imc.height);
       setState(() {
-        result = bmi.toStringAsFixed(1);
+        imc.result = bmi;
 
         if (bmi < 16) {
-          interpretation = "Magreza grave";
+          imc.interpretation = "Magreza grave";
         } else if (bmi < 17) {
-          interpretation = "Magreza moderada";
+          imc.interpretation = "Magreza moderada";
         } else if (bmi < 18.5) {
-          interpretation = "Magreza leve";
+          imc.interpretation = "Magreza leve";
         } else if (bmi < 25) {
-          interpretation = "Saudável";
+          imc.interpretation = "Saudável";
         } else if (bmi < 30) {
-          interpretation = "Sobrepeso";
+          imc.interpretation = "Sobrepeso";
         } else if (bmi < 35) {
-          interpretation = "Obesidade Grau I";
+          imc.interpretation = "Obesidade Grau I";
         } else if (bmi < 40) {
-          interpretation = "Obesidade Grau II";
+          imc.interpretation = "Obesidade Grau II";
         } else {
-          interpretation = "Obesidade Grau III";
+          imc.interpretation = "Obesidade Grau III";
         }
+
+        imcList.add(imc);
+        imc = IMC(0, 0); // Limpa os campos após o cálculo
       });
     }
   }
@@ -77,19 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
             children: [
               const SizedBox(height: 16.0),
               TextField(
-                key: const Key('weightTextField'),
-                controller: weightController,
+                onChanged: (value) => imc.weight = double.tryParse(value) ?? 0,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Peso (kg)',
                 ),
               ),
               const SizedBox(height: 16.0),
               TextField(
-                key: const Key('heightTextField'),
-                controller: heightController,
+                onChanged: (value) => imc.height = double.tryParse(value) ?? 0,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Altura (m)',
                 ),
               ),
@@ -100,15 +104,28 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               const SizedBox(height: 16.0),
               Text(
-                'IMC: $result',
-                style: TextStyle(fontSize: 24),
+                'IMC: ${imc.result.toStringAsFixed(1)}',
+                style: const TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 8.0),
               Text(
-                interpretation,
-                style: TextStyle(fontSize: 18),
+                imc.interpretation,
+                style: const TextStyle(fontSize: 18),
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16.0),
+              ListView.builder(
+                shrinkWrap: true,
+                itemCount: imcList.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(
+                        'IMC: ${imcList[index].weight} / ${imcList[index].height}'),
+                    subtitle: Text(
+                        'Resultado: ${imcList[index].result.toStringAsFixed(1)} - ${imcList[index].interpretation}'),
+                  );
+                },
               ),
             ],
           ),
